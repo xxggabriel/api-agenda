@@ -47,9 +47,9 @@ class AgendaController extends Controller
         echo $this->return(false, "", $this->agenda->readById($id));
     }
 
-    public function update()
+    public function update($id)
     {
-        $id = $this->getParam("id");
+        $id = $this->getParam($id);
         $titulo = $this->getParam("titulo");
         $descricao = $this->getParam("descricao");
         $data = $this->getParam("data");
