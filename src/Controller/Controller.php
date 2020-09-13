@@ -9,8 +9,8 @@ class Controller {
     public function return($erro = false, $message = "", $parameters = [])
     {
         $data = [];
-        foreach ($parameters as $key) {
-            $data[] = $key;
+        foreach ($parameters as $key => $value) {
+            $data[$key] = $value;
         }
         $result = [
             "error"     => $erro,
