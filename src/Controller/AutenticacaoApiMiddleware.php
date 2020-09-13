@@ -2,13 +2,41 @@
 
 namespace Agenda\Controller;
 
-class AutenticacaoApiMiddleware {
+use Agenda\Model\Api;
+use Slim\Middleware;
 
-    public function __invoke($request, $response, $next)
+class AutenticacaoApiMiddleware extends Middleware {
+
+    public function call()
     {
-        // Verifica o login
+        $app = $this->app;
+        $this->next->call();
+        $res = $app->response;
+        $body = $res->getBody();
 
-        return $response;
+        $api = new \Agenda\Model\Api();
+        $controller = new \Agenda\Controller\Controller();
+        
+        
+        if(empty($app->request->params("api_key")) || empty($app->request->params("user"))){
+           $body = $controller->return(true, "Erro, api_key ou user não foi informada.");
+        } else {
+
+            $result = $api->readKey($app->request->params("api_key"));
+            
+            if(empty($result)){
+               $body = $controller->return(true, "Erro de autenticação, verifique sua api_key se está correta.");  
+            } else {
+                
+                if($result["user"] != $app->request->params("user")){
+                    $body = $controller->return(true, "Erro ao se autenticar, verifique sua user  se está correta.");
+                }
+            }
+        }
+
+        return $res->setBody($body);
     }
-
+    
 }
+
+
