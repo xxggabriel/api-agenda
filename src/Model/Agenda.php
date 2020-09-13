@@ -22,10 +22,21 @@ class Agenda extends Sql
         return $this->select("SELECT * FROM agenda");
     }
 
-    public function read($id)
+    public function readById($id)
     {
         return $this->select("SELECT * FROM agenda WHERE id = :id", [
             ":id"  => $id
+        ]);
+    }
+
+    public function update($id, $titulo, $descricao, $data, $status = 1)
+    {
+        return $this->query("UPDATE agenda SET titulo = :titulo, descricao = :descricao, data = :data, status = :status WHERE id = :id", [
+            ":id"           => $id,
+            ":titulo"       => $titulo,
+            ":descricao"    => $descricao,
+            ":data"         => $data,
+            ":status"       => $status
         ]);
     }
 

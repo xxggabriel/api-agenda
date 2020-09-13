@@ -42,4 +42,41 @@ class AgendaController extends Controller
         echo $this->return(false, "", $this->agenda->readAll());
     }
 
+    public function readById($id)
+    {
+        echo $this->return(false, "", $this->agenda->readById($id));
+    }
+
+    public function update()
+    {
+        $id = $this->getParam("id");
+        $titulo = $this->getParam("titulo");
+        $descricao = $this->getParam("descricao");
+        $data = $this->getParam("data");
+        $status = $this->getParam("status");
+        
+        if(empty($titulo) || empty($descricao) || empty($data) || empty($id)){
+            return $this->return(true, "Erro, é obrigátorio ser passado todos os parâmetro (id, titulo, descricao, data)");
+        }
+
+        $result = $this->agenda->update($id, $titulo, $descricao, $data, $status);
+
+        if($result){
+            return $this->return(false, "Atualizado com sucesso");
+        } else {
+            return $this->return(true, "Erro ao atualizar o agendamento, tente novamente");
+        }
+    }
+
+    public function delete($id)
+    {
+        $result = $this->agenda->delete($id);
+
+        if($result){
+            return $this->return(false, "Apagado com sucesso");
+        } else {
+            return $this->return(true, "Erro ao apagar o agendamento, tente novamente");
+        }
+    }
+
 }
